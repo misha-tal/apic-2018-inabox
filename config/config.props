@@ -14,6 +14,6 @@ NAMESPACE="apiconnect"
 EMAIL_ACCOUNT=admin.apicup.${EXTERNAL_IP_ADDRESS}@gmail.com
 
 APICUP="apicup-tools/apicup"
-IMAGES_PATH="~/images"
+IMAGES_PATH=~/images
 
-APICUP_PROJECT_PATH="~/apicup_project"
+APICUP_PROJECT_PATH=~/apicup_project

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. config/config.props
+. config/config.props 
 
 echo "Loading management images into registry"
 ${APICUP} registry-upload management $(find ${IMAGES_PATH}/ -name "management-images-kubernetes_lts_v2018.4.1.*.tgz" | head -1) ${REGISTRY_HOSTNAME}:${REGISTRY_PORT}
