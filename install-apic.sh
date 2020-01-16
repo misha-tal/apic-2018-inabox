@@ -21,16 +21,18 @@ SECRET="tangram-reg-secret"
 
 ENDPOINT_MANAGER="manager.${FQDN_SUFFIX}"
 ENDPOINT_ANALYTICS="analytics.${FQDN_SUFFIX}"
-ENDPOINT_PORTAL="portal.${FQDN_SUFFIX}"
-ENDPOINT_GW="gw.${FQDN_SUFFIX}"
-
+ENDPOINT_ANALYTICS_ING="analytics-ing.${FQDN_SUFFIX}"
+ENDPOINT_PORTAL_WWW="portal-www.${FQDN_SUFFIX}"
+ENDPOINT_PORTAL_ADMIN="portal-admin.${FQDN_SUFFIX}"
+ENDPOINT_API_GW="api-gw.${FQDN_SUFFIX}"
+ENDPOINT_GWS="gws.${FQDN_SUFFIX}"
 
 if grep --silent $ENDPOINT_MANAGER /etc/hosts
 then
     echo "Host file contains apic entries."
 else
     echo "Updating hosts file"
-    echo "$EXTERNAL_IP_ADDRESS   $ENDPOINT_MANAGER $ENDPOINT_ANALYTICS $ENDPOINT_PORTAL $ENDPOINT_GW" >> /etc/hosts
+    echo "$EXTERNAL_IP_ADDRESS   $ENDPOINT_MANAGER $ENDPOINT_ANALYTICS $ENDPOINT_ANALYTICS_ING $ENDPOINT_PORTAL_WWW $ENDPOINT_PORTAL_ADMIN $ENDPOINT_API_GW $ENDPOINT_GWS" >> /etc/hosts
 fi
 
 
@@ -40,14 +42,17 @@ sed -i "s#{{ENDPOINT_API_CONSUMER_API}}#${ENDPOINT_MANAGER}#g" apic-project/apic
 sed -i "s#{{ENDPOINT_API_PLATFORM_API}}#${ENDPOINT_MANAGER}#g" apic-project/apiconnect-up.yml
 
 sed -i "s#{{ENDPOINT_ANALYTICS_CLIENT}}#${ENDPOINT_ANALYTICS}#g" apic-project/apiconnect-up.yml
-sed -i "s#{{ENDPOINT_ANALYTICS_INGESTION}}#${ENDPOINT_ANALYTICS}#g" apic-project/apiconnect-up.yml
+sed -i "s#{{ENDPOINT_ANALYTICS_INGESTION}}#${ENDPOINT_ANALYTICS_ING}#g" apic-project/apiconnect-up.yml
 
-sed -i "s#{{PORTAL_ADMIN_ENDPOINT}}#${ENDPOINT_PORTAL}#g" apic-project/apiconnect-up.yml
-sed -i "s#{{PORTAL_WWW_ENDPOINT}}#${ENDPOINT_PORTAL}#g" apic-project/apiconnect-up.yml
+sed -i "s#{{PORTAL_ADMIN_ENDPOINT}}#${ENDPOINT_PORTAL_ADMIN}#g" apic-project/apiconnect-up.yml
+sed -i "s#{{PORTAL_WWW_ENDPOINT}}#${ENDPOINT_PORTAL_WWW}#g" apic-project/apiconnect-up.yml
 
-sed -i "s#{{ENDPOINT_API_GATEWAY}}#${ENDPOINT_GW}#g" apic-project/apiconnect-up.yml
-sed -i "s#{{ENDPOINT_APIC_GATEWAY_SERVICE}}#${ENDPOINT_GW}#g" apic-project/apiconnect-up.yml
+sed -i "s#{{ENDPOINT_API_GATEWAY}}#${ENDPOINT_API_GW}#g" apic-project/apiconnect-up.yml
+sed -i "s#{{ENDPOINT_APIC_GATEWAY_SERVICE}}#${ENDPOINT_GWS}#g" apic-project/apiconnect-up.yml
 
 sed -i "s#{{SECRET}}#${SECRET}#g" apic-project/apiconnect-up.yml
 sed -i "s#{{NAMESPACE}}#${NAMESPACE}#g" apic-project/apiconnect-up.yml
 (cd apic-project; ../apicup-tools/apicup --accept-license subsys get manager --validate)
+(cd apic-project; ../apicup-tools/apicup --accept-license subsys get analytics --validate)
+(cd apic-project; ../apicup-tools/apicup --accept-license subsys get portal --validate)
+(cd apic-project; ../apicup-tools/apicup --accept-license subsys get gwy --validate)
