@@ -1,0 +1,110 @@
+apiVersion: v1
+kind: apic.ibm.com/APIConnectCluster
+metadata:
+  creationTimestamp: "2020-01-16T16:28:43Z"
+  name: yml
+spec:
+  secret-name: yml
+  subsystems:
+  - apiVersion: v1
+    kind: apic.ibm.com/ManagementSubsystem
+    metadata:
+      creationTimestamp: "2020-01-16T16:28:57Z"
+      name: manager
+    spec:
+      ApplianceProperties: null
+      CloudProperties:
+        mode: dev
+        registry: registry.tangram.cloud:5000
+        storage-class: velox-block
+      SubsystemProperties:
+        secret-name: yml-manager
+        target: kubernetes
+      endpoints:
+        api-manager-ui: "{{ENDPOINT_API_MANAGER_UI}}"
+        cloud-admin-ui: "{{ENDPOINT_API_CLOUD_ADMIN_UI}}"
+        consumer-api: "{{ENDPOINT_API_CONSUMER_API}}"
+        platform-api: "{{ENDPOINT_API_PLATFORM_API}}"
+      settings:
+        cassandra-backup-path: /backups
+        cassandra-backup-port: 22
+        cassandra-backup-protocol: sftp
+        cassandra-cluster-size: 1
+        cassandra-max-memory-gb: 9
+        cassandra-volume-size-gb: 50
+        create-crd: true
+    status: {}
+  - apiVersion: v1
+    kind: apic.ibm.com/PortalSubsystem
+    metadata:
+      creationTimestamp: "2020-01-16T16:28:57Z"
+      name: portal
+    spec:
+      ApplianceProperties: null
+      CloudProperties:
+        mode: dev
+        registry: registry.tangram.cloud:5000
+        storage-class: velox-block
+      SubsystemProperties:
+        secret-name: yml-portal
+        target: kubernetes
+      endpoints:
+        portal-admin: "{{PORTAL_ADMIN_ENDPOINT}}"
+        portal-www: "{{PORTAL_WWW_ENDPOINT}}"
+      settings:
+        backup-storage-size-gb: 5
+        db-logs-storage-size-gb: 2
+        db-storage-size-gb: 12
+        site-backup-host: ""
+        site-backup-path: ""
+        site-backup-port: 0
+        www-storage-size-gb: 5
+    status: {}
+  - apiVersion: v1
+    kind: apic.ibm.com/GatewaySubsystem
+    metadata:
+      creationTimestamp: "2020-01-16T16:28:57Z"
+      name: gwy
+    spec:
+      ApplianceProperties: null
+      CloudProperties:
+        mode: standard
+        registry: :5000
+        storage-class: velox-block
+      SubsystemProperties:
+        secret-name: yml-gwy
+        target: kubernetes
+      endpoints:
+        api-gateway: "{{ENDPOINT_API_GATEWAY}}"
+        apic-gw-service: "{{ENDPOINT_APIC_GATEWAY_SERVICE}}"
+      settings:
+        image-repository: registry.tangram.cloud:5000/apiconnect/datapower-api-gateway
+        image-tag: 2018.4.1.9-release-nonprod
+        license-version: Nonproduction
+        v5-compatibility-mode: false
+    status: {}
+  - apiVersion: v1
+    kind: apic.ibm.com/AnalyticsSubsystem
+    metadata:
+      creationTimestamp: "2020-01-16T16:28:58Z"
+      name: analytics
+    spec:
+      ApplianceProperties: null
+      CloudProperties:
+        mode: dev
+        registry: registry.tangram.cloud:5000
+        storage-class: velox-block
+      SubsystemProperties:
+        secret-name: yml-analytics
+        target: kubernetes
+      endpoints:
+        analytics-client: "{{ENDPOINT_ANALYTICS_CLIENT}}"
+        analytics-ingestion: "{{ENDPOINT_ANALYTICS_INGESTION}}"
+      settings:
+        coordinating-max-memory-gb: 6
+        data-max-memory-gb: 6
+        master-max-memory-gb: 6
+        master-storage-size-gb: 5
+    status: {}
+status:
+  Ready: false
