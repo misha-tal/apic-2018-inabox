@@ -63,7 +63,16 @@ sed -i "s#{{ENDPOINT_APIC_GATEWAY_SERVICE}}#${ENDPOINT_GWS}#g" ${APICUP_PROJECT_
 
 sed -i "s#{{SECRET}}#${SECRET}#g" ${APICUP_PROJECT_PATH}/apiconnect-up.yml
 sed -i "s#{{NAMESPACE}}#${NAMESPACE}#g" ${APICUP_PROJECT_PATH}/apiconnect-up.yml
+
+
 (cd ${APICUP_PROJECT_PATH}; ${CURRENT_PATH}/apicup-tools/apicup --accept-license subsys get manager --validate)
 (cd ${APICUP_PROJECT_PATH}; ${CURRENT_PATH}/apicup-tools/apicup --accept-license subsys get analytics --validate)
 (cd ${APICUP_PROJECT_PATH}; ${CURRENT_PATH}/apicup-tools/apicup --accept-license subsys get portal --validate)
 (cd ${APICUP_PROJECT_PATH}; ${CURRENT_PATH}/apicup-tools/apicup --accept-license subsys get gwy --validate)
+
+sleep 5
+(cd ${APICUP_PROJECT_PATH}; ${CURRENT_PATH}/apicup-tools/apicup --accept-license subsys install manager --validate)
+(cd ${APICUP_PROJECT_PATH}; ${CURRENT_PATH}/apicup-tools/apicup --accept-license subsys install analytics --validate)
+(cd ${APICUP_PROJECT_PATH}; ${CURRENT_PATH}/apicup-tools/apicup --accept-license subsys install portal --validate)
+(cd ${APICUP_PROJECT_PATH}; ${CURRENT_PATH}/apicup-tools/apicup --accept-license subsys install gwy --validate)
+
