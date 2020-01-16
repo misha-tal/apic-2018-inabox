@@ -35,7 +35,7 @@ fi
 sed -i "s#{{ENDPOINT_API_MANAGER_UI}}#${ENDPOINT_MANAGER}#g" apic-project/apiconnect-up.yml
 sed -i "s#{{ENDPOINT_API_CLOUD_ADMIN_UI}}#${ENDPOINT_MANAGER}#g" apic-project/apiconnect-up.yml
 sed -i "s#{{ENDPOINT_API_CONSUMER_API}}#${ENDPOINT_MANAGER}#g" apic-project/apiconnect-up.yml
-sed -i "s#{{ENDPOINT_API_PLATFORM_API}}}#${ENDPOINT_MANAGER}#g" apic-project/apiconnect-up.yml
+sed -i "s#{{ENDPOINT_API_PLATFORM_API}}#${ENDPOINT_MANAGER}#g" apic-project/apiconnect-up.yml
 
 sed -i "s#{{ENDPOINT_ANALYTICS_CLIENT}}#${ENDPOINT_ANALYTICS}#g" apic-project/apiconnect-up.yml
 sed -i "s#{{ENDPOINT_ANALYTICS_INGESTION}}#${ENDPOINT_ANALYTICS}#g" apic-project/apiconnect-up.yml
