@@ -5,7 +5,7 @@ KUBERNETES_VERSION="1.15"
 POD_NETWORK_CIDR="172.20.0.0/16"
 SERVICE_NETWORK_CIDR="172.21.0.0/16"
 
-REGISTRY_USER="reguser"
+REGISTRY_USER="admin"
 REGISTRY_PASSWORD="passw0rd"
 REGISTRY_HOSTNAME="registry.tangram.cloud"
 REGISTRY_PORT="5000"
@@ -156,9 +156,6 @@ echo "Fixing secret service"
 
 docker login ${REGISTRY_HOSTNAME}:${REGISTRY_PORT} -u ${REGISTRY_USER} -p \'"${REGISTRY_PASSWORD}"\'
 
-apicup registry-upload management management-images-kubernetes_lts_v2018.4.1.*.tgz ${REGISTRY_HOSTNAME}:${REGISTRY_PORT}
-apicup registry-upload portal portal-images-kubernetes_lts_v2018.4.1.*.tgz ${REGISTRY_HOSTNAME}:${REGISTRY_PORT}
-apicup registry-upload analytics analytics-images-kubernetes_lts_v2018.4.1.*.tgz ${REGISTRY_HOSTNAME}:${REGISTRY_PORT}
 
 
 echo "Load Kubernetes artefacts"
@@ -166,7 +163,7 @@ echo "Load Kubernetes artefacts"
 export NAMESPACE=${NAMESPACE}
 kubectl create namespace $NAMESPACE
 kubectl create secret docker-registry my-localreg-secret \
-  --docker-server=localhost:5000 --docker-username=${REGISTRY_USER} \
+  --docker-server=${REGISTRY_HOSTNAME}:${REGISTRY_PORT} --docker-username=${REGISTRY_USER} \
   --docker-password=\'"${REGISTRY_PASSWORD}"\' --docker-email=${EMAIL_ACCOUNT} \
   -n ${NAMESPACE}
 
@@ -174,7 +171,7 @@ kubectl create clusterrolebinding add-on-cluster-admin \
   --clusterrole=cluster-admin --serviceaccount=apiconnect:default
 
 echo "Init helm"
-helm init
+helm init --tiller-namespace ${NAMESPACE}
 
 echo "Installing ingress"
 helm install --name ingress -f ingress-controller/nginx-ingress-values.yaml stable/nginx-ingress --namespace ${NAMESPACE}
@@ -184,3 +181,8 @@ kubectl create -f ./k8s-objects/hostpath-provisioner.yaml -n ${NAMESPACE}
 kubectl create -f ./k8s-objects/storage-class.yaml -n ${NAMESPACE}
 
 echo "All done."
+
+
+#apicup registry-upload management management-images-kubernetes_lts_v2018.4.1.*.tgz ${REGISTRY_HOSTNAME}:${REGISTRY_PORT}
+#apicup registry-upload portal portal-images-kubernetes_lts_v2018.4.1.*.tgz ${REGISTRY_HOSTNAME}:${REGISTRY_PORT}
+#apicup registry-upload analytics analytics-images-kubernetes_lts_v2018.4.1.*.tgz ${REGISTRY_HOSTNAME}:${REGISTRY_PORT}
