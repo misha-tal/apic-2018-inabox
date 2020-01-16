@@ -70,9 +70,15 @@ sed -i "s#{{NAMESPACE}}#${NAMESPACE}#g" ${APICUP_PROJECT_PATH}/apiconnect-up.yml
 (cd ${APICUP_PROJECT_PATH}; ${CURRENT_PATH}/apicup-tools/apicup --accept-license subsys get portal --validate)
 (cd ${APICUP_PROJECT_PATH}; ${CURRENT_PATH}/apicup-tools/apicup --accept-license subsys get gwy --validate)
 
-sleep 5
-(cd ${APICUP_PROJECT_PATH}; ${CURRENT_PATH}/apicup-tools/apicup --accept-license subsys install manager --validate)
-(cd ${APICUP_PROJECT_PATH}; ${CURRENT_PATH}/apicup-tools/apicup --accept-license subsys install analytics --validate)
-(cd ${APICUP_PROJECT_PATH}; ${CURRENT_PATH}/apicup-tools/apicup --accept-license subsys install portal --validate)
-(cd ${APICUP_PROJECT_PATH}; ${CURRENT_PATH}/apicup-tools/apicup --accept-license subsys install gwy --validate)
+echo "Check above for errors!"
+sleep 10
 
+
+echo "Installing subsystems"
+export TILLER_NAMESPACE=${NAMESPACE}
+(cd ${APICUP_PROJECT_PATH}; ${CURRENT_PATH}/apicup-tools/apicup --accept-license subsys install manager)
+(cd ${APICUP_PROJECT_PATH}; ${CURRENT_PATH}/apicup-tools/apicup --accept-license subsys install analytics)
+(cd ${APICUP_PROJECT_PATH}; ${CURRENT_PATH}/apicup-tools/apicup --accept-license subsys install portal)
+(cd ${APICUP_PROJECT_PATH}; ${CURRENT_PATH}/apicup-tools/apicup --accept-license subsys install gwy)
+
+echo "Done"

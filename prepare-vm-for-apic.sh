@@ -154,6 +154,7 @@ docker login ${REGISTRY_HOSTNAME}:${REGISTRY_PORT} -u ${REGISTRY_USER} -p "${REG
 echo "Load Kubernetes artefacts"
 
 export NAMESPACE=${NAMESPACE}
+export TILLER_NAMESPACE=${NAMESPACE}
 kubectl create namespace $NAMESPACE
 kubectl create secret docker-registry tangram-reg-secret \
   --docker-server=${REGISTRY_HOSTNAME}:${REGISTRY_PORT} --docker-username=${REGISTRY_USER} \
