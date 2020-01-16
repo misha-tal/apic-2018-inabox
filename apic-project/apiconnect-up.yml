@@ -16,6 +16,8 @@ spec:
       CloudProperties:
         mode: dev
         registry: registry.tangram.cloud:5000
+        registry-secret: "{{SECRET}}"
+        namespace: "{{NAMESPACE}}"
         storage-class: velox-block
       SubsystemProperties:
         secret-name: yml-manager
@@ -44,13 +46,15 @@ spec:
       CloudProperties:
         mode: dev
         registry: registry.tangram.cloud:5000
+        registry-secret: "{{SECRET}}"
+        namespace: "{{NAMESPACE}}"
         storage-class: velox-block
       SubsystemProperties:
         secret-name: yml-portal
         target: kubernetes
       endpoints:
         portal-admin: "{{PORTAL_ADMIN_ENDPOINT}}"
-        portal-www: "{{PORTAL_WWW_ENDPOINT}}"
+        portal-www: "{{PORTAL_ADMIN_ENDPOINT}}"
       settings:
         backup-storage-size-gb: 5
         db-logs-storage-size-gb: 2
@@ -68,8 +72,10 @@ spec:
     spec:
       ApplianceProperties: null
       CloudProperties:
-        mode: standard
+        mode: dev
         registry: :5000
+        registry-secret: "{{SECRET}}"
+        namespace: "{{NAMESPACE}}"
         storage-class: velox-block
       SubsystemProperties:
         secret-name: yml-gwy
@@ -93,6 +99,8 @@ spec:
       CloudProperties:
         mode: dev
         registry: registry.tangram.cloud:5000
+        registry-secret: "{{SECRET}}"
+        namespace: "{{NAMESPACE}}"
         storage-class: velox-block
       SubsystemProperties:
         secret-name: yml-analytics

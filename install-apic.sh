@@ -16,6 +16,8 @@ then
 	exit 1
 fi
 
+NAMESPACE="apiconnect"
+SECRET="tangram-reg-secret"
 
 ENDPOINT_MANAGER="manager.${FQDN_SUFFIX}"
 ENDPOINT_ANALYTICS="analytics.${FQDN_SUFFIX}"
@@ -46,4 +48,6 @@ sed -i "s#{{PORTAL_WWW_ENDPOINT}}#${ENDPOINT_PORTAL}#g" apic-project/apiconnect-
 sed -i "s#{{ENDPOINT_API_GATEWAY}}#${ENDPOINT_GW}#g" apic-project/apiconnect-up.yml
 sed -i "s#{{ENDPOINT_APIC_GATEWAY_SERVICE}}#${ENDPOINT_GW}#g" apic-project/apiconnect-up.yml
 
+sed -i "s#{{SECRET}}#${SECRET}#g" apic-project/apiconnect-up.yml
+sed -i "s#{{NAMESPACE}}#${NAMESPACE}#g" apic-project/apiconnect-up.yml
 (cd apic-project; ../apicup-tools/apicup --accept-license subsys get manager --validate)

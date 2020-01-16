@@ -163,7 +163,7 @@ echo "Load Kubernetes artefacts"
 
 export NAMESPACE=${NAMESPACE}
 kubectl create namespace $NAMESPACE
-kubectl create secret docker-registry my-localreg-secret \
+kubectl create secret docker-registry tangram-reg-secret \
   --docker-server=${REGISTRY_HOSTNAME}:${REGISTRY_PORT} --docker-username=${REGISTRY_USER} \
   --docker-password=\'"${REGISTRY_PASSWORD}"\' --docker-email=${EMAIL_ACCOUNT} \
   -n ${NAMESPACE}
