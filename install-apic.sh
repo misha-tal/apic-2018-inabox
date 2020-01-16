@@ -1,23 +1,34 @@
 #!/bin/bash
 
+CURRENT_PATH=$(pwd)
 
-# modify apic project template
-EXTERNAL_IP_ADDRESS="$1"
-if [[ -z "$1" ]]
+. config/config.props
+
+if [[ -z "$EXTERNAL_IP_ADDRESS" ]]
 then
-	echo "Missing parameter - IP address, e.g. $0 172.17.20.100 test-env.demo.com"
+	echo "Missing parameter - IP address"
 	exit 1
 fi
 
-FQDN_SUFFIX="$2"
-if [[ -z "$2" ]]
+if [[ -z "$FQDN_SUFFIX" ]]
 then
-	echo "Missing parameter - fqdn suffix, e.g. $0 172.17.20.100 test-env.demo.com"
+	echo "Missing parameter - fqdn suffix, e.g. test-env.demo.com"
 	exit 1
 fi
 
 NAMESPACE="apiconnect"
 SECRET="tangram-reg-secret"
+
+if [[ -d ${APICUP_PROJECT_PATH} ]]
+then
+    echo "Project directory already exists ${APICUP_PROJECT_PATH}."
+    exit 2
+else
+    echo "Creating project directory in ${APICUP_PROJECT_PATH}"
+    mkdir -p ${APICUP_PROJECT_PATH}
+
+    cp apic-project/* ${APICUP_PROJECT_PATH}/
+fi
 
 ENDPOINT_MANAGER="manager.${FQDN_SUFFIX}"
 ENDPOINT_ANALYTICS="analytics.${FQDN_SUFFIX}"
@@ -36,23 +47,23 @@ else
 fi
 
 
-sed -i "s#{{ENDPOINT_API_MANAGER_UI}}#${ENDPOINT_MANAGER}#g" apic-project/apiconnect-up.yml
-sed -i "s#{{ENDPOINT_API_CLOUD_ADMIN_UI}}#${ENDPOINT_MANAGER}#g" apic-project/apiconnect-up.yml
-sed -i "s#{{ENDPOINT_API_CONSUMER_API}}#${ENDPOINT_MANAGER}#g" apic-project/apiconnect-up.yml
-sed -i "s#{{ENDPOINT_API_PLATFORM_API}}#${ENDPOINT_MANAGER}#g" apic-project/apiconnect-up.yml
+sed -i "s#{{ENDPOINT_API_MANAGER_UI}}#${ENDPOINT_MANAGER}#g" ${APICUP_PROJECT_PATH}/apiconnect-up.yml
+sed -i "s#{{ENDPOINT_API_CLOUD_ADMIN_UI}}#${ENDPOINT_MANAGER}#g" ${APICUP_PROJECT_PATH}/apiconnect-up.yml
+sed -i "s#{{ENDPOINT_API_CONSUMER_API}}#${ENDPOINT_MANAGER}#g" ${APICUP_PROJECT_PATH}/apiconnect-up.yml
+sed -i "s#{{ENDPOINT_API_PLATFORM_API}}#${ENDPOINT_MANAGER}#g" ${APICUP_PROJECT_PATH}/apiconnect-up.yml
 
-sed -i "s#{{ENDPOINT_ANALYTICS_CLIENT}}#${ENDPOINT_ANALYTICS}#g" apic-project/apiconnect-up.yml
-sed -i "s#{{ENDPOINT_ANALYTICS_INGESTION}}#${ENDPOINT_ANALYTICS_ING}#g" apic-project/apiconnect-up.yml
+sed -i "s#{{ENDPOINT_ANALYTICS_CLIENT}}#${ENDPOINT_ANALYTICS}#g" ${APICUP_PROJECT_PATH}/apiconnect-up.yml
+sed -i "s#{{ENDPOINT_ANALYTICS_INGESTION}}#${ENDPOINT_ANALYTICS_ING}#g" ${APICUP_PROJECT_PATH}/apiconnect-up.yml
 
-sed -i "s#{{PORTAL_ADMIN_ENDPOINT}}#${ENDPOINT_PORTAL_ADMIN}#g" apic-project/apiconnect-up.yml
-sed -i "s#{{PORTAL_WWW_ENDPOINT}}#${ENDPOINT_PORTAL_WWW}#g" apic-project/apiconnect-up.yml
+sed -i "s#{{PORTAL_ADMIN_ENDPOINT}}#${ENDPOINT_PORTAL_ADMIN}#g" ${APICUP_PROJECT_PATH}/apiconnect-up.yml
+sed -i "s#{{PORTAL_WWW_ENDPOINT}}#${ENDPOINT_PORTAL_WWW}#g" ${APICUP_PROJECT_PATH}/apiconnect-up.yml
 
-sed -i "s#{{ENDPOINT_API_GATEWAY}}#${ENDPOINT_API_GW}#g" apic-project/apiconnect-up.yml
-sed -i "s#{{ENDPOINT_APIC_GATEWAY_SERVICE}}#${ENDPOINT_GWS}#g" apic-project/apiconnect-up.yml
+sed -i "s#{{ENDPOINT_API_GATEWAY}}#${ENDPOINT_API_GW}#g" ${APICUP_PROJECT_PATH}/apiconnect-up.yml
+sed -i "s#{{ENDPOINT_APIC_GATEWAY_SERVICE}}#${ENDPOINT_GWS}#g" ${APICUP_PROJECT_PATH}/apiconnect-up.yml
 
-sed -i "s#{{SECRET}}#${SECRET}#g" apic-project/apiconnect-up.yml
-sed -i "s#{{NAMESPACE}}#${NAMESPACE}#g" apic-project/apiconnect-up.yml
-(cd apic-project; ../apicup-tools/apicup --accept-license subsys get manager --validate)
-(cd apic-project; ../apicup-tools/apicup --accept-license subsys get analytics --validate)
-(cd apic-project; ../apicup-tools/apicup --accept-license subsys get portal --validate)
-(cd apic-project; ../apicup-tools/apicup --accept-license subsys get gwy --validate)
+sed -i "s#{{SECRET}}#${SECRET}#g" ${APICUP_PROJECT_PATH}/apiconnect-up.yml
+sed -i "s#{{NAMESPACE}}#${NAMESPACE}#g" ${APICUP_PROJECT_PATH}/apiconnect-up.yml
+(cd ${APICUP_PROJECT_PATH}; ${CURRENT_PATH}/apicup-tools/apicup --accept-license subsys get manager --validate)
+(cd ${APICUP_PROJECT_PATH}; ${CURRENT_PATH}/apicup-tools/apicup --accept-license subsys get analytics --validate)
+(cd ${APICUP_PROJECT_PATH}; ${CURRENT_PATH}/apicup-tools/apicup --accept-license subsys get portal --validate)
+(cd ${APICUP_PROJECT_PATH}; ${CURRENT_PATH}/apicup-tools/apicup --accept-license subsys get gwy --validate)

@@ -1,21 +1,13 @@
 #!/bin/bash
 
-IP_ADDRESS="$1"
-KUBERNETES_VERSION="1.15"
-POD_NETWORK_CIDR="172.20.0.0/16"
-SERVICE_NETWORK_CIDR="172.21.0.0/16"
 
-REGISTRY_USER="admin"
-REGISTRY_PASSWORD="passw0rd"
-REGISTRY_HOSTNAME="registry.tangram.cloud"
-REGISTRY_PORT="5000"
+. config/config.props
+IP_ADDRESS="$EXTERNAL_IP_ADDRESS"
 
-NAMESPACE="apiconnect"
-EMAIL_ACCOUNT=admin.apicup.${IP_ADDRESS}@gmail.com
 
-if [[ -z "$1" ]]
+if [[ -z "$IP_ADDRESS" ]]
 then
-	echo "Missing parameter - IP address, e.g. $0 158.177.227.254"
+	echo "Missing configuration parameter - IP address"
 	exit 1
 fi
 
@@ -39,7 +31,7 @@ sed -i "s/^LABEL=SWAP/#LABEL=SWAP/g" /etc/fstab
 DOWNLOAD_DIR=$HOME/offload_download
 mkdir -p $DOWNLOAD_DIR
 
-if [[ "skip" == "$2" ]] 
+if [[ "skip" == "$1" ]] 
 then
 	echo "Skipping installations"
 else
@@ -185,8 +177,3 @@ kubectl create -f ./k8s-objects/hostpath-provisioner.yaml -n ${NAMESPACE}
 kubectl create -f ./k8s-objects/storage-class.yaml -n ${NAMESPACE}
 
 echo "All done."
-
-
-#apicup registry-upload management management-images-kubernetes_lts_v2018.4.1.*.tgz ${REGISTRY_HOSTNAME}:${REGISTRY_PORT}
-#apicup registry-upload portal portal-images-kubernetes_lts_v2018.4.1.*.tgz ${REGISTRY_HOSTNAME}:${REGISTRY_PORT}
-#apicup registry-upload analytics analytics-images-kubernetes_lts_v2018.4.1.*.tgz ${REGISTRY_HOSTNAME}:${REGISTRY_PORT}
