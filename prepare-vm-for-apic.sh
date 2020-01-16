@@ -174,6 +174,8 @@ kubectl create clusterrolebinding add-on-cluster-admin \
 echo "Init helm"
 helm init --tiller-namespace ${NAMESPACE}
 
+echo "Waiting for tiller to start up"
+sleep 10
 echo "Installing ingress"
 helm install --name ingress -f ingress-controller/nginx-ingress-values.yaml stable/nginx-ingress \
   --namespace ${NAMESPACE} --tiller-namespace ${NAMESPACE} 

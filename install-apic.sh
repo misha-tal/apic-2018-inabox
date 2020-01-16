@@ -5,14 +5,14 @@
 EXTERNAL_IP_ADDRESS="$1"
 if [[ -z "$1" ]]
 then
-	echo "Missing parameter - IP address, e.g. $0 172.17.20.100"
+	echo "Missing parameter - IP address, e.g. $0 172.17.20.100 test-env.demo.com"
 	exit 1
 fi
 
 FQDN_SUFFIX="$2"
 if [[ -z "$2" ]]
 then
-	echo "Missing parameter - fqdn suffix, e.g. $0 test-env.demo.com"
+	echo "Missing parameter - fqdn suffix, e.g. $0 172.17.20.100 test-env.demo.com"
 	exit 1
 fi
 
@@ -28,7 +28,7 @@ then
     echo "Host file contains apic entries."
 else
     echo "Updating hosts file"
-    echo "$EXTERNAL_IP_ADDRESS   $ENDPOINT_MANAGER $ENDPOINT_ANALYTICS $ENDPOINT_PORTAL $ENDPOINT_GW"
+    echo "$EXTERNAL_IP_ADDRESS   $ENDPOINT_MANAGER $ENDPOINT_ANALYTICS $ENDPOINT_PORTAL $ENDPOINT_GW" >> /etc/hosts
 fi
 
 
