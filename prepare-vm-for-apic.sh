@@ -158,7 +158,7 @@ export TILLER_NAMESPACE=${NAMESPACE}
 kubectl create namespace $NAMESPACE
 kubectl create secret docker-registry tangram-reg-secret \
   --docker-server=${REGISTRY_HOSTNAME}:${REGISTRY_PORT} --docker-username=${REGISTRY_USER} \
-  --docker-password=\'"${REGISTRY_PASSWORD}"\' --docker-email=${EMAIL_ACCOUNT} \
+  --docker-password="${REGISTRY_PASSWORD}" --docker-email=${EMAIL_ACCOUNT} \
   -n ${NAMESPACE}
 
 kubectl create clusterrolebinding add-on-cluster-admin \
@@ -168,8 +168,10 @@ echo "Init helm"
 helm init --tiller-namespace ${NAMESPACE}
 
 echo "Waiting for tiller to start up"
-sleep 10
+sleep 30
 echo "Installing ingress"
+echo "helm install --name ingress -f ingress-controller/nginx-ingress-values.yaml stable/nginx-ingress \
+  --namespace ${NAMESPACE} --tiller-namespace ${NAMESPACE}"
 helm install --name ingress -f ingress-controller/nginx-ingress-values.yaml stable/nginx-ingress \
   --namespace ${NAMESPACE} --tiller-namespace ${NAMESPACE} 
 
