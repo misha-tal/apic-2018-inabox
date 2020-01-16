@@ -87,7 +87,7 @@ spec:
         image-repository: registry.tangram.cloud:5000/apiconnect/datapower-api-gateway
         image-tag: 2018.4.1.9-release-nonprod
         image-pull-policy: "IfNotPresent"
-        monitor-image-repository: "egistry.tangram.cloud:5000/apiconnect/k8s-datapower-monitor"
+        monitor-image-repository: "registry.tangram.cloud:5000/apiconnect/k8s-datapower-monitor"
         monitor-image-tag: "2018.4.1.9"
         license-version: Nonproduction
         v5-compatibility-mode: false

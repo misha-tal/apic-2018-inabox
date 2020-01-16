@@ -15,7 +15,7 @@ echo "Loading gateway images"
 docker login ${REGISTRY_HOSTNAME}:${REGISTRY_PORT} -u ${REGISTRY_USER} -p "${REGISTRY_PASSWORD}"
 
 echo ".. loading gateway image into local registry"
-docker load -i idg_dk201841*.lts.nonprod.tar.gz 
+docker load -i $(find ${IMAGES_PATH}/ -name "idg_dk201841*.lts.nonprod.tar.gz" | head -1)
 IDG_TAG=$(docker images | egrep "^ibmcom/datapower " | awk '{print $2}')
 
 docker tag ibmcom/datapower:${IDG_TAG} ${REGISTRY_HOSTNAME}:${REGISTRY_PORT}/apiconnect/datapower-api-gateway:2018.4.1.9-release-nonprod
@@ -25,9 +25,9 @@ docker push ${REGISTRY_HOSTNAME}:${REGISTRY_PORT}/apiconnect/datapower-api-gatew
 
 
 echo ".. loading datapower monitor image into local registry"
-docker load -i ${IMAGES_PATH}/dpm201841*.lts.tar.gz
+docker load -i $(find ${IMAGES_PATH}/ -name "dpm201841*.lts.tar.gz" | head -1)
 
-DPM_TAG=$(docker images | egrep "^ibmcom/datapower " | awk '{print $2}')
+DPM_TAG=$(docker images | egrep "^ibmcom/k8s-datapower-monitor " | awk '{print $2}')
 docker tag ibmcom/k8s-datapower-monitor:${DPM_TAG} ${REGISTRY_HOSTNAME}:${REGISTRY_PORT}/apiconnect/k8s-datapower-monitor:2018.4.1.9
 
 echo ".. pushing datapower monitor image into remote registry"
