@@ -26,6 +26,7 @@ else
 	echo "158.177.227.242	$REGISTRY_HOSTNAME  #container registry" >> /etc/hosts
 fi
 
+
 sysctl -w vm.max_map_count=262144
 swapoff -a
 
@@ -48,6 +49,22 @@ else
 	systemctl start docker
 	sleep 5
 	echo "Docker installed"
+
+	if [[ -f /etc/docker/daemon.json ]] 
+	then
+		if grep --quiet "{REGISTRY_HOSTNAME}" /etc/docker/daemon.json
+		then
+			echo "/etc/docker/daemon.json already configured for insecure registry"
+		else
+			echo "Should fix /etc/docker/daemon.json manually"
+			exit
+		fi
+	else
+		echo "Configuring /etc/docker/daemon.json for insecure registry"
+		echo "{\
+        	\"insecure-registries\" : [\"${REGISTRY_HOSTNAME}:${REGISTRY_PORT}\"] \
+    	}" >> /etc/docker/daemon.json
+	fi
 
 	apt install -y docker-compose
 	echo "Docker installed"
@@ -82,7 +99,7 @@ done
 
 for i in $(curl -s https://docs.projectcalico.org/v3.8/manifests/calico.yaml | grep "image:" | awk '{print $2}' | sort | uniq)
 do
-        docker pull $i
+    docker pull $i
 done
 
 echo "Done pulling images"
@@ -97,7 +114,7 @@ echo "Done downloading."
 echo "Configuring Kubernetes"
 
 
-KUBEAPI_VERSION=$(docker images | grep "k8s.gcr.io/kube-apiserver" | awk '{print $2}')
+KUBEAPI_VERSION=$(docker images | grep "k8s.gcr.io/kube-apiserver" | awk '{print $2}' | tail -1)
 
 #kubeadm init --ignore-preflight-errors=NumCPU --apiserver-advertise-address="${IP_ADDRESS}" --pod-network-cidr="${POD_NETWORK_CIDR}" --kubernetes-version="${KUBEAPI_VERSION}" | tee -a $HOME/kubeadm-init.log
 kubeadm init --ignore-preflight-errors=NumCPU --apiserver-advertise-address="${IP_ADDRESS}" --service-cidr="${SERVICE_NETWORK_CIDR}"   --pod-network-cidr="${POD_NETWORK_CIDR}" --kubernetes-version="${KUBEAPI_VERSION}" | tee -a $HOME/kubeadm-init.log
