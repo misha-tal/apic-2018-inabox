@@ -164,7 +164,7 @@ apicup registry-upload analytics analytics-images-kubernetes_lts_v2018.4.1.*.tgz
 echo "Load Kubernetes artefacts"
 
 export NAMESPACE=${NAMESPACE}
-
+kubectl create namespace $NAMESPACE
 kubectl create secret docker-registry my-localreg-secret \
   --docker-server=localhost:5000 --docker-username=${REGISTRY_USER} \
   --docker-password=\'"${REGISTRY_PASSWORD}"\' --docker-email=${EMAIL_ACCOUNT} \
@@ -176,6 +176,7 @@ kubectl create clusterrolebinding add-on-cluster-admin \
 echo "Init helm"
 helm init
 
+echo "Installing ingress"
 helm install --name ingress -f ingress-controller/nginx-ingress-values.yaml stable/nginx-ingress --namespace ${NAMESPACE}
 
 kubectl create -f ./k8s-objects/storage-rbac.yaml -n ${NAMESPACE}
