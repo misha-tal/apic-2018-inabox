@@ -54,7 +54,7 @@ spec:
         target: kubernetes
       endpoints:
         portal-admin: "{{PORTAL_ADMIN_ENDPOINT}}"
-        portal-www: "{{PORTAL_ADMIN_ENDPOINT}}"
+        portal-www: "{{PORTAL_WWW_ENDPOINT}}"
       settings:
         backup-storage-size-gb: 5
         db-logs-storage-size-gb: 2
@@ -73,7 +73,7 @@ spec:
       ApplianceProperties: null
       CloudProperties:
         mode: dev
-        registry: :5000
+        registry: registry.tangram.cloud:5000
         registry-secret: "{{SECRET}}"
         namespace: "{{NAMESPACE}}"
         storage-class: velox-block
@@ -88,6 +88,7 @@ spec:
         image-tag: 2018.4.1.9-release-nonprod
         license-version: Nonproduction
         v5-compatibility-mode: false
+        enable-high-performance-peering: true
     status: {}
   - apiVersion: v1
     kind: apic.ibm.com/AnalyticsSubsystem
