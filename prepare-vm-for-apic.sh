@@ -147,7 +147,7 @@ echo "Fixing secret service"
 #(cd $HOME/SMTPServer && ./build.sh)
 
 
-docker login ${REGISTRY_HOSTNAME}:${REGISTRY_PORT} -u ${REGISTRY_USER} -p \'"${REGISTRY_PASSWORD}"\'
+docker login ${REGISTRY_HOSTNAME}:${REGISTRY_PORT} -u ${REGISTRY_USER} -p "${REGISTRY_PASSWORD}"
 
 
 

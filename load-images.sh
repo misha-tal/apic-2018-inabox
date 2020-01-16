@@ -3,16 +3,16 @@
 . config/config.props
 
 echo "Loading management images into registry"
-${APICUP} registry-upload management ${IMAGES_PATH}/management-images-kubernetes_lts_v2018.4.1.*.tgz ${REGISTRY_HOSTNAME}:${REGISTRY_PORT}
+${APICUP} registry-upload management $(find ${IMAGES_PATH}/ -name "management-images-kubernetes_lts_v2018.4.1.*.tgz" | head -1) ${REGISTRY_HOSTNAME}:${REGISTRY_PORT}
 
 echo "Loading portal images into registry"
-${APICUP} registry-upload portal ${IMAGES_PATH}/portal-images-kubernetes_lts_v2018.4.1.*.tgz ${REGISTRY_HOSTNAME}:${REGISTRY_PORT}
+${APICUP} registry-upload portal $(find ${IMAGES_PATH}/ -name "portal-images-kubernetes_lts_v2018.4.1.*.tgz" | head -1)  ${REGISTRY_HOSTNAME}:${REGISTRY_PORT}
 
 echo "Loading analytics images into registry"
-${APICUP} registry-upload analytics ${IMAGES_PATH}/analytics-images-kubernetes_lts_v2018.4.1.*.tgz ${REGISTRY_HOSTNAME}:${REGISTRY_PORT}
+${APICUP} registry-upload analytics $(find ${IMAGES_PATH}/ -name "analytics-images-kubernetes_lts_v2018.4.1.*.tgz" | head -1) ${REGISTRY_HOSTNAME}:${REGISTRY_PORT}
 
 echo "Loading gateway images"
-docker login ${REGISTRY_HOSTNAME}:${REGISTRY_PORT} -u ${REGISTRY_USER} -p \'"${REGISTRY_PASSWORD}"\'
+docker login ${REGISTRY_HOSTNAME}:${REGISTRY_PORT} -u ${REGISTRY_USER} -p "${REGISTRY_PASSWORD}"
 
 echo ".. loading gateway image into local registry"
 docker load -i idg_dk201841*.lts.nonprod.tar.gz 
