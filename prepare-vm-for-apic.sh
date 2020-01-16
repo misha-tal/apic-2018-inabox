@@ -43,7 +43,7 @@ if [[ "skip" == "$2" ]]
 then
 	echo "Skipping installations"
 else
-	apt update && \
+	apt update 
 	apt install -y apt-transport-https docker.io curl python2.7 unzip && \
 	systemctl enable docker && \
 	systemctl start docker
@@ -130,6 +130,7 @@ fi
 echo ${PIPESTATUS[0]} 
 echo $?
 
+sleep 5
 
 mkdir -p $HOME/.kube
 cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
