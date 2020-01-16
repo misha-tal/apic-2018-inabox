@@ -174,7 +174,8 @@ echo "Init helm"
 helm init --tiller-namespace ${NAMESPACE}
 
 echo "Installing ingress"
-helm install --name ingress -f ingress-controller/nginx-ingress-values.yaml stable/nginx-ingress --namespace ${NAMESPACE}
+helm install --name ingress -f ingress-controller/nginx-ingress-values.yaml stable/nginx-ingress \
+  --namespace ${NAMESPACE} --tiller-namespace ${NAMESPACE} 
 
 kubectl create -f ./k8s-objects/storage-rbac.yaml -n ${NAMESPACE}
 kubectl create -f ./k8s-objects/hostpath-provisioner.yaml -n ${NAMESPACE}
