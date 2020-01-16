@@ -64,9 +64,10 @@ else
 		echo "{\
         	\"insecure-registries\" : [\"${REGISTRY_HOSTNAME}:${REGISTRY_PORT}\"] \
     	}" >> /etc/docker/daemon.json
+		systemctl restart docker
 	fi
 
-	apt install -y docker-compose
+	#apt install -y docker-compose
 	echo "Docker installed"
 
 	echo "Pre-installing kubernetes"
@@ -114,7 +115,7 @@ echo "Done downloading."
 echo "Configuring Kubernetes"
 
 
-KUBEAPI_VERSION=$(docker images | grep "k8s.gcr.io/kube-apiserver" | awk '{print $2}' | tail -1)
+KUBEAPI_VERSION=$(docker images | grep "k8s.gcr.io/kube-apiserver" | grep "${KUBERNETES_VERSION}" | awk '{print $2}' | tail -1)
 
 #kubeadm init --ignore-preflight-errors=NumCPU --apiserver-advertise-address="${IP_ADDRESS}" --pod-network-cidr="${POD_NETWORK_CIDR}" --kubernetes-version="${KUBEAPI_VERSION}" | tee -a $HOME/kubeadm-init.log
 kubeadm init --ignore-preflight-errors=NumCPU --apiserver-advertise-address="${IP_ADDRESS}" --service-cidr="${SERVICE_NETWORK_CIDR}"   --pod-network-cidr="${POD_NETWORK_CIDR}" --kubernetes-version="${KUBEAPI_VERSION}" | tee -a $HOME/kubeadm-init.log
@@ -152,8 +153,6 @@ echo "Fixing secret service"
 #№mkdir -p /data/smtp/mails
 #(cd $HOME/SMTPServer && ./build.sh)
 
-echo "Build registry"
-mkdir -p /data/registry
 
 docker login ${REGISTRY_HOSTNAME}:${REGISTRY_PORT} -u ${REGISTRY_USER} -p \'"${REGISTRY_PASSWORD}"\'
 
