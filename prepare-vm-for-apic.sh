@@ -100,6 +100,12 @@ echo "Done pulling images"
 echo "Download calico yaml"
 wget https://docs.projectcalico.org/v3.8/manifests/calico.yaml -O $DOWNLOAD_DIR/calico.yaml
 echo "Download helm charts"
+
+echo "Download apicops"
+wget https://github.com/ibm-apiconnect/apicops/releases/download/v0.2.40/apicops-linux -O $DOWNLOAD_DIR/apicops \
+  && mv $DOWNLOAD_DIR/apicops /usr/local/bin \
+  && chmod +x /usr/local/bin/apicops
+
 wget https://github.com/helm/charts/archive/master.zip -O $DOWNLOAD_DIR/master.zip 
 echo "Done downloading."
 

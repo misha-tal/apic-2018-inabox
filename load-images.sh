@@ -22,13 +22,14 @@ docker tag ibmcom/datapower:${IDG_TAG} ${REGISTRY_HOSTNAME}:${REGISTRY_PORT}/api
 
 echo ".. pushing gateway image into remote registry"
 docker push ${REGISTRY_HOSTNAME}:${REGISTRY_PORT}/apiconnect/datapower-api-gateway:2018.4.1.9-release-nonprod
-
+#registry.tangram.cloud:5000/datapower-api-gateway:2018.4.1.9-315826-release-prod
 
 echo ".. loading datapower monitor image into local registry"
 docker load -i $(find ${IMAGES_PATH}/ -name "dpm201841*.lts.tar.gz" | head -1)
 
 DPM_TAG=$(docker images | egrep "^ibmcom/k8s-datapower-monitor " | awk '{print $2}')
 docker tag ibmcom/k8s-datapower-monitor:${DPM_TAG} ${REGISTRY_HOSTNAME}:${REGISTRY_PORT}/apiconnect/k8s-datapower-monitor:2018.4.1.9
+#registry.tangram.cloud:5000/k8s-datapower-monitor:2018.4.1-31-6fe1df8
 
 echo ".. pushing datapower monitor image into remote registry"
 docker push ${REGISTRY_HOSTNAME}:${REGISTRY_PORT}/apiconnect/k8s-datapower-monitor:2018.4.1.9
