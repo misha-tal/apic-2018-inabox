@@ -1,0 +1,8 @@
+[Unit]
+Description=fakeSMTP
+
+[Service]
+ExecStart=/usr/bin/java -jar /opt/SMTPServer/fakeSMTP-2.0.jar -o /root/emails/ -b -s -p 2525
+
+[Install]
+WantedBy=multi-user.target

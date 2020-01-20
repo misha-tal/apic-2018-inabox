@@ -1,0 +1,7 @@
+smtp:
+  image: catatnight/postfix:latest
+  ports:
+    - "25:25"
+  environment: 
+    mail-domain: apic.tangram.io
+    smtp_user: admin:passw0rd

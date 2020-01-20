@@ -91,7 +91,7 @@ spec:
         monitor-image-tag: "2018.4.1.9"
         license-version: Nonproduction
         v5-compatibility-mode: false
-        enable-high-performance-peering: "true"
+        enable-high-performance-peering: "false"
     status: {}
   - apiVersion: v1
     kind: apic.ibm.com/AnalyticsSubsystem
