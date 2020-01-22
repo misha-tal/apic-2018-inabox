@@ -66,6 +66,7 @@ sed -i "s#{{ENDPOINT_APIC_GATEWAY_SERVICE}}#${ENDPOINT_GWS}#g" ${APICUP_PROJECT_
 sed -i "s#{{SECRET}}#${SECRET}#g" ${APICUP_PROJECT_PATH}/apiconnect-up.yml
 sed -i "s#{{NAMESPACE}}#${NAMESPACE}#g" ${APICUP_PROJECT_PATH}/apiconnect-up.yml
 
+sed -i "s#{{REGISTRY_HOST_PORT}}#${REGISTRY_HOSTNAME}:${REGISTRY_PORT}#g" ${APICUP_PROJECT_PATH}/apiconnect-up.yml
 
 (cd ${APICUP_PROJECT_PATH}; ${CURRENT_PATH}/apicup-tools/apicup --accept-license subsys get manager --validate)
 (cd ${APICUP_PROJECT_PATH}; ${CURRENT_PATH}/apicup-tools/apicup --accept-license subsys get analytics --validate)
