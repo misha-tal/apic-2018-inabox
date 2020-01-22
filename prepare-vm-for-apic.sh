@@ -11,12 +11,12 @@ then
 	exit 1
 fi
 
-if grep --quiet -i "$REGISTRY_HOSTNAME" /etc/hosts; then
-	echo "Registry is configured in hosts file"
-else
-	echo "Adding registry hostname to hosts file"
-	echo "158.177.227.242	$REGISTRY_HOSTNAME  #container registry" >> /etc/hosts
-fi
+#if grep --quiet -i "$REGISTRY_HOSTNAME" /etc/hosts; then
+#	echo "Registry is configured in hosts file"
+#else
+#	echo "Adding registry hostname to hosts file"
+#	echo "158.177.227.242	$REGISTRY_HOSTNAME  #container registry" >> /etc/hosts
+#fi
 
 
 sysctl -w vm.max_map_count=262144

@@ -38,13 +38,15 @@ ENDPOINT_PORTAL_ADMIN="portal-admin.${FQDN_SUFFIX}"
 ENDPOINT_API_GW="api-gw.${FQDN_SUFFIX}"
 ENDPOINT_GWS="gws.${FQDN_SUFFIX}"
 
-if grep --silent $ENDPOINT_MANAGER /etc/hosts
-then
-    echo "Host file contains apic entries."
-else
-    echo "Updating hosts file"
-    echo "$EXTERNAL_IP_ADDRESS   $ENDPOINT_MANAGER $ENDPOINT_ANALYTICS $ENDPOINT_ANALYTICS_ING $ENDPOINT_PORTAL_WWW $ENDPOINT_PORTAL_ADMIN $ENDPOINT_API_GW $ENDPOINT_GWS" >> /etc/hosts
-fi
+
+### using DNS instead
+#if grep --silent $ENDPOINT_MANAGER /etc/hosts
+#then
+#    echo "Host file contains apic entries."
+#else
+#    echo "Updating hosts file"
+#    echo "$EXTERNAL_IP_ADDRESS   $ENDPOINT_MANAGER $ENDPOINT_ANALYTICS $ENDPOINT_ANALYTICS_ING $ENDPOINT_PORTAL_WWW $ENDPOINT_PORTAL_ADMIN $ENDPOINT_API_GW $ENDPOINT_GWS" >> /etc/hosts
+#fi
 
 
 sed -i "s#{{ENDPOINT_API_MANAGER_UI}}#${ENDPOINT_MANAGER}#g" ${APICUP_PROJECT_PATH}/apiconnect-up.yml
